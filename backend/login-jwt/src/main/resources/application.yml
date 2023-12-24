@@ -1,0 +1,31 @@
+server:
+  port: 8010
+  servlet:
+    context-path: /login-jwt
+    session:
+      timeout: 60000
+
+jwt:
+  token-validity-in-seconds: 3000
+
+spring:
+  session:
+    store-type: redis
+    redis:
+      flush-mode: on_save
+      namespace: girmi:session
+  data:
+    redis:
+      host: localhost
+      password: develop
+      port: 6379
+
+
+
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html

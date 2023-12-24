@@ -1,0 +1,40 @@
+server:
+  port: 443
+  servlet:
+    context-path: /
+  ssl:
+    key-store: girmi-keystore.p12
+    key-store-type: PKCS12
+    key-store-password: develop
+    key-alias: girmi-keystore
+
+spring:
+  main:
+    web-application-type: reactive
+  cloud:
+    gateway:
+      default-filters:
+        - name: GlobalFilter
+          args:
+            baseMessage: Girmi Gateway GlobalFilter
+            preLogger: true
+            postLogger: true
+      routes:
+        - id: service-common
+          uri: http://localhost:8030
+          predicates:
+            - Path=/service-common/**
+        - id: data-mybatis
+          uri: http://localhost:8041
+          predicates:
+            - Path=/data-mybatis/**
+        - id: data-jpa
+          uri: http://localhost:8042
+          predicates:
+            - Path=/data-jpa/**
+
+
+
+
+logging:
+  config: classpath:config/logging.xml

@@ -1,0 +1,7 @@
+dependencies {
+	implementation project(':library-common')
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
