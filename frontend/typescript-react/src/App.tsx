@@ -1,10 +1,8 @@
 import React from 'react';
-import MainIndex from './components/main/mainIndex';
+import Routers from './components/routers';
 
 function App() {
-  return (
-    <MainIndex />
-  )
+	return <Routers />;
 }
 
 export default App;

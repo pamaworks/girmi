@@ -2,7 +2,7 @@ import { Button, IconButton, Link, Toolbar, Typography } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { noShowHeaderUrls } from '../main/mainIndex';
+import { noShowHeaderUrls } from '../routers';
 
 export default function Header() {
 	const sections = [
