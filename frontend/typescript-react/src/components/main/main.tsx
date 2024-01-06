@@ -1,6 +1,6 @@
 import React from 'react';
-import MainFeaturedPost from './contents/mainFeaturedPost';
 import { Grid } from '@mui/material';
+import MainFeaturedPost from './contents/mainFeaturedPost';
 import FeaturedPost from './contents/featurePost';
 import MainPost from './contents/mainPost';
 import Sidebar from './contents/sidebar';
