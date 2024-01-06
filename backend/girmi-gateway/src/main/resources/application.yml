@@ -20,6 +20,10 @@ spring:
             preLogger: true
             postLogger: true
       routes:
+        - id: front
+          uri: http://localhost:3000
+          predicates:
+            - Path=/**
         - id: service-common
           uri: http://localhost:8030
           predicates:
