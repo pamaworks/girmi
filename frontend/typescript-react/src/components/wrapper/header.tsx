@@ -6,7 +6,7 @@ import { noShowHeaderUrls } from '../routers';
 
 export default function Header() {
 	const sections = [
-		{ title: 'Technology', url: '#' },
+		{ title: 'Posts', url: '/posts' },
 		{ title: 'Design', url: '#' },
 		{ title: 'Culture', url: '#' },
 		{ title: 'Business', url: '#' },
