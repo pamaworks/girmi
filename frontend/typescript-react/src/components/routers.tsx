@@ -6,6 +6,7 @@ import Wrapper from './wrapper/wrapper';
 import MainPost from './main/contents/mainPost';
 
 export const noShowHeaderUrls = [] as string[];
+export const needLoginUrls = ['/posts'] as string[];
 
 function MainIndex() {
 	return (
