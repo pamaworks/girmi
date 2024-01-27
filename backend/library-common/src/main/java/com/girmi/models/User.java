@@ -1,11 +1,9 @@
 package com.girmi.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class UserVO {
+public class User {
     private String userId;
-    private String userPw;
     private String userNm;
 }
