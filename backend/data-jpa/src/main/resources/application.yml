@@ -18,3 +18,7 @@ spring:
     password: ENC(O7Ip4KEWuUE9DEMsHbhtIg==)
   jpa:
     show-sql: true
+    mapping-resources:
+      - queries/user.xml 
+
+

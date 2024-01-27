@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name="GIRMI_USER")
-public class UserVO {
+public class User {
     @Id
     @Column(name = "userId", unique = true)
     @Schema(name = "userId", description = "userId")

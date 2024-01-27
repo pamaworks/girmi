@@ -1,6 +1,6 @@
 package com.girmi.data.jpa.apis.user;
 
-import com.girmi.data.jpa.models.UserVO;
+import com.girmi.data.jpa.models.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,12 +14,17 @@ public class UserController {
     UserService userService;
 
     @GetMapping("/user")
-    public UserVO user(String userId) throws Exception {
+    public User user(String userId) throws Exception {
         return userService.getUser(userId);
     }
 
+    @PostMapping("/userByPasswd")
+    public User user(String userId, String userPw) throws Exception {
+        return userService.getUserByPassWd(userId, userPw);
+    }
+
     @PostMapping("/user")
-    public void user(@RequestBody UserVO user) throws Exception{
+    public void user(@RequestBody User user) throws Exception{
         userService.insertUser(user);
     }
 
