@@ -20,7 +20,10 @@ spring:
       password: develop
       port: 6379
 
-
+clients:
+  data:
+    jpa:
+      user: http://localhost:8042/data-jpa/user
 
 
 springdoc:

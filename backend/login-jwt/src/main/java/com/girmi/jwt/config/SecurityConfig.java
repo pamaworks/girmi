@@ -50,9 +50,10 @@ public class SecurityConfig {
 
                 .and()
                 .authorizeHttpRequests() // HttpServletRequest를 사용하는 요청들에 대한 접근제한을 설정하겠다.
-                .requestMatchers("/authentication/authenticate").permitAll() // 로그인 api
+                .requestMatchers("/auth/login").permitAll() // 로그인 api
                 .requestMatchers("/user/addUser").permitAll() // 회원가입 api
-                .requestMatchers(PathRequest.toH2Console()).permitAll()// h2-console, favicon.ico 요청 인증 무시
+                .requestMatchers("/swagger-ui.html","/swagger-ui/*","/v3/api-docs/*", "/v3/api-docs").permitAll()
+                //.requestMatchers(PathRequest.toH2Console()).permitAll()// h2-console, favicon.ico 요청 인증 무시
                 .anyRequest().authenticated() // 그 외 인증 없이 접근X
 
                 .and()
