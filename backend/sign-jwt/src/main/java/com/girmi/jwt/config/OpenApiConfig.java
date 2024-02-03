@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 
 @OpenAPIDefinition(
         servers = {
-                @Server(url = "/login-jwt", description = "Default Server url")
+                @Server(url = "/sign-jwt", description = "Default Server url")
         },
         info = @Info(
                 title = "JWT Login",

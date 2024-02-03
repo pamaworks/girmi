@@ -1,5 +1,6 @@
 package com.girmi.jwt;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -9,15 +10,16 @@ import org.springframework.context.ApplicationContext;
 
 import java.util.Arrays;
 
+@Slf4j
 @EnableFeignClients(basePackages = "com.girmi.jwt.clients")
 @SpringBootApplication
-public class LoginJwtApplication implements CommandLineRunner {
+public class SignJwtApplication implements CommandLineRunner {
 
 	@Autowired
 	ApplicationContext applicationContext;
 
 	public static void main(String[] args) {
-		SpringApplication.run(LoginJwtApplication.class, args);
+		SpringApplication.run(SignJwtApplication.class, args);
 	}
 
 	@Override
@@ -25,7 +27,7 @@ public class LoginJwtApplication implements CommandLineRunner {
 		String[] beans = applicationContext.getBeanDefinitionNames();
 		Arrays.sort(beans);
 		for(String bean : beans) {
-			System.out.println(bean);
+			log.debug(bean);
 		}
 	}
 }

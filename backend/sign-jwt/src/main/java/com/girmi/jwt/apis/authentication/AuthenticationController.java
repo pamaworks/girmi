@@ -2,17 +2,16 @@ package com.girmi.jwt.apis.authentication;
 
 
 import com.girmi.jwt.apis.user.UserService;
-import com.girmi.jwt.config.token.TokenProvider;
 import com.girmi.jwt.models.RequestUser;
 import com.girmi.jwt.models.SignIn;
 import com.girmi.jwt.util.EncryptUtil;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,9 +26,10 @@ public class AuthenticationController {
 
     @Operation(description="사용자 인증")
     @PostMapping("/login")
-    public ResponseEntity<SignIn> authenticate(@Valid @RequestBody RequestUser user) throws Exception {
+    public ResponseEntity<SignIn> authenticate(HttpServletRequest request,
+                                               @Valid @RequestBody RequestUser user) throws Exception {
 
-        return authenticationService.authenticate(user);
+        return authenticationService.authenticate(request, user);
     }
 
     @Operation(description = "암호화 된 패스워드 받기")
