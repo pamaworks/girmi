@@ -15,12 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import static com.girmi.constants.SignConstant.SESSION_KEY_TOKEN_JWT;
 
 @Slf4j
 @Service
@@ -54,10 +55,7 @@ public class AuthenticationService {
             httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
             HttpSession session = request.getSession();
-            session.setAttribute("jwt-token", jwt);
-            session.setMaxInactiveInterval(30);
-            log.info("sessionId : {}", session.getId());
-            log.info("jwt-token : {}", session.getAttribute("jwt-token"));
+            session.setAttribute(SESSION_KEY_TOKEN_JWT, jwt);
 
             return new ResponseEntity<SignIn>(new SignIn(userInfo, jwt), httpHeaders, HttpStatus.OK);
 
