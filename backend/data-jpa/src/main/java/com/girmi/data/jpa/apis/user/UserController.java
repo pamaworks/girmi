@@ -1,11 +1,14 @@
 package com.girmi.data.jpa.apis.user;
 
 import com.girmi.data.jpa.models.User;
+import com.girmi.data.jpa.models.UserAuthority;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -14,9 +17,11 @@ public class UserController {
 
     @Autowired
     UserService userService;
-    @Operation(description = "Search User By UserId")
+    @Operation(description = "Search User By UserId", parameters = {
+            @Parameter(name = "userId", description = "User Id")
+    })
     @GetMapping("/user")
-    public User user(String userId) throws Exception {
+    public User user(@RequestParam(value = "userId") String userId) throws Exception {
         return userService.getUser(userId);
     }
 
@@ -25,13 +30,22 @@ public class UserController {
             @Parameter(name = "userPw", description = "User Password")
     })
     @GetMapping(value = "/userByUserPasswd")
-    public User user(String userId, String userPw) throws Exception {
+    public User user(
+            @RequestParam(value = "userId") String userId,
+            @RequestParam(value = "userPw") String userPw) throws Exception {
         return userService.getUserByPassWd(userId, userPw);
     }
 
+    @Operation(description = "Insert User")
     @PostMapping("/user")
     public void user(@RequestBody User user) throws Exception{
         userService.insertUser(user);
+    }
+
+    @Operation(description = "Insert User Authorities")
+    @PostMapping("/userAuthority")
+    public void userAuthority(@RequestBody List<UserAuthority> userAuthority) throws Exception{
+        userService.insertUserAuthorities(userAuthority);
     }
 
 }

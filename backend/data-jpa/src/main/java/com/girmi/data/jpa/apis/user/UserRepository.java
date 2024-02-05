@@ -12,4 +12,5 @@ public interface UserRepository extends CrudRepository<User, String>, CommonRepo
 
     @Query(nativeQuery = true)
     public User findByUserNotUserPw(@Param("userId") String userId, @Param("userPw")String userPw) throws Exception;
+
 }

@@ -1,9 +1,12 @@
 package com.girmi.data.jpa.apis.user;
 
 import com.girmi.data.jpa.models.User;
+import com.girmi.data.jpa.models.UserAuthority;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -11,6 +14,9 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    UserAuthorityRepository userAuthorityRepository;
 
     public User getUser(String userId) throws Exception {
         return userRepository.findByUserId(userId);
@@ -22,6 +28,10 @@ public class UserService {
 
     public void insertUser(User user) throws Exception {
         userRepository.save(user);
+    }
+
+    public void insertUserAuthorities(List<UserAuthority> userAuthorityList) throws Exception {
+        userAuthorityRepository.saveAll(userAuthorityList);
     }
 
 }
