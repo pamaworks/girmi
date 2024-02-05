@@ -43,9 +43,17 @@ public class UserController {
     }
 
     @Operation(description = "Insert User Authorities")
-    @PostMapping("/userAuthority")
+    @PostMapping("/userAuthorities")
     public void userAuthority(@RequestBody List<UserAuthority> userAuthority) throws Exception{
         userService.insertUserAuthorities(userAuthority);
+    }
+
+    @Operation(description = "Get User Authorities", parameters = {
+            @Parameter(name = "userId", description = "User Id")
+    })
+    @GetMapping("/userAuthorities")
+    public List<String> userAuthorities(@RequestParam(value = "userId") String userId) throws Exception {
+        return userService.getUserAuthorities(userId);
     }
 
 }

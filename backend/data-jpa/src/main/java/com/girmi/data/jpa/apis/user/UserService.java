@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -32,6 +33,10 @@ public class UserService {
 
     public void insertUserAuthorities(List<UserAuthority> userAuthorityList) throws Exception {
         userAuthorityRepository.saveAll(userAuthorityList);
+    }
+
+    public List<String> getUserAuthorities(String userId) throws Exception {
+        return userAuthorityRepository.findById(userId).stream().map(authority -> authority.getAuthority()).collect(Collectors.toList());
     }
 
 }
