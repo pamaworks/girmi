@@ -3,8 +3,8 @@ package com.girmi.jwt.apis.authentication;
 import com.girmi.jwt.clients.data.jpa.JpaUserClient;
 import com.girmi.jwt.config.token.TokenProvider;
 import com.girmi.jwt.filter.JwtFilter;
-import com.girmi.jwt.models.RequestUser;
 import com.girmi.jwt.models.SignIn;
+import com.girmi.jwt.models.UserAll;
 import com.girmi.models.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -20,6 +20,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import static com.girmi.constants.SignConstant.SESSION_KEY_TOKEN_JWT;
 
@@ -34,9 +35,9 @@ public class AuthenticationService {
     @Autowired
     JpaUserClient jpaUserClient;
 
-    public ResponseEntity<SignIn> authenticate(HttpServletRequest request, RequestUser user) throws Exception {
+    public ResponseEntity<SignIn> authenticate(HttpServletRequest request, String userId, String userPw) throws Exception {
 
-        User userInfo = jpaUserClient.getUserByPassWd(user.getUserId(), user.getUserPw());
+        UserAll userInfo = jpaUserClient.user(userId);
         
         if (userInfo == null) {
             return new ResponseEntity<SignIn>(null, null,  HttpStatus.NOT_FOUND);
@@ -45,7 +46,7 @@ public class AuthenticationService {
         try {
 
             UsernamePasswordAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(user.getUserId(), user.getUserPw());
+                    new UsernamePasswordAuthenticationToken(userId, userPw);
 
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -57,11 +58,33 @@ public class AuthenticationService {
             HttpSession session = request.getSession();
             session.setAttribute(SESSION_KEY_TOKEN_JWT, jwt);
 
-            return new ResponseEntity<SignIn>(new SignIn(userInfo, jwt), httpHeaders, HttpStatus.OK);
+            User user = new User();
+            user.setUserNm(userInfo.getUserNm());
+
+            return new ResponseEntity<SignIn>(new SignIn(user, jwt), httpHeaders, HttpStatus.OK);
 
         }catch (Exception ee) {
             log.error(ExceptionUtils.getStackTrace(ee));
             return new ResponseEntity<SignIn>(null, null,  HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+    public ResponseEntity<Boolean> isSignInUser(HttpServletRequest request) throws Exception {
+        HttpSession session = request.getSession();
+
+        String token = (String) session.getAttribute(SESSION_KEY_TOKEN_JWT);
+
+        log.info(session.getId());
+        log.info("token : {}" , token);
+
+        try {
+
+            if (StringUtils.hasText(token) && tokenProvider.validateToken(token)) {
+                return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+            }
+            return new ResponseEntity<Boolean>(false, HttpStatus.UNAUTHORIZED);
+        }catch (Exception e) {
+            return new ResponseEntity<Boolean>(false, HttpStatus.UNAUTHORIZED);
         }
 
     }

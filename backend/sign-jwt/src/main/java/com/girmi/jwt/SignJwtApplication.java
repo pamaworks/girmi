@@ -27,7 +27,7 @@ public class SignJwtApplication implements CommandLineRunner {
 		String[] beans = applicationContext.getBeanDefinitionNames();
 		Arrays.sort(beans);
 		for(String bean : beans) {
-			log.debug(bean);
+			log.info(bean);
 		}
 	}
 }

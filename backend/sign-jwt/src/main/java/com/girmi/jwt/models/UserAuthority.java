@@ -2,10 +2,8 @@ package com.girmi.jwt.models;
 
 import lombok.Data;
 
-import java.util.List;
-
 @Data
-public class RequestUser {
+public class UserAuthority {
     private String userId;
-    private String userPw;
+    private String authority;
 }

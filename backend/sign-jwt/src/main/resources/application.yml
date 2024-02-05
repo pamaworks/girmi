@@ -2,15 +2,13 @@ server:
   port: 8010
   servlet:
     context-path: /sign-jwt
-    session:
-      timeout: 60000
 
 jwt:
   token-validity-in-seconds: 3000
 
 spring:
   session:
-    timeout: 30
+    timeout: 30000
     store-type: redis
     redis:
       flush-mode: on_save
@@ -27,7 +25,6 @@ clients:
   data:
     jpa:
       user: http://localhost:8042/data-jpa/user
-
 
 springdoc:
   api-docs:

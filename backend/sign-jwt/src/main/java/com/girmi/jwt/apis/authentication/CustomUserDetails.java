@@ -1,4 +1,4 @@
-package com.girmi.jwt.common;
+package com.girmi.jwt.apis.authentication;
 
 import com.girmi.jwt.clients.data.jpa.JpaUserClient;
 import com.girmi.jwt.models.UserAll;
@@ -33,10 +33,9 @@ public class CustomUserDetails implements UserDetailsService {
             UserAll user =  jpaUserClient.user(username);
 
             if(user != null) {
-                String password = passwordEncoder.encode(user.getPassword());
-                List<SimpleGrantedAuthority> authList = new ArrayList<SimpleGrantedAuthority>();
+                List<SimpleGrantedAuthority> authList = new ArrayList<>();
+                jpaUserClient.userAuthorities(username).forEach(data -> authList.add(new SimpleGrantedAuthority(data)));
                 user.setAuthorities(authList);
-                user.setUserPw(password);
             }
             return user;
 
