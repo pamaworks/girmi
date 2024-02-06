@@ -8,15 +8,11 @@ jwt:
 
 spring:
   session:
-    timeout: 30000
-    store-type: redis
+    timeout: 30
     redis:
-      flush-mode: on_save
       namespace: girmi:session
   data:
     redis:
-      repositories:
-        enabled: true
       host: localhost
       password: develop
       port: 6379
