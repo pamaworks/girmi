@@ -3,7 +3,6 @@ import { Box, CircularProgress, Container, CssBaseline, Fade, ThemeProvider, cre
 import { useLocation } from 'react-router-dom';
 import Footer from './footer';
 import Header from './header';
-import { needLoginUrls } from '../routers';
 import SignIn from '../sign/signIn';
 
 function Wrapper(props: { child: ReactNode }) {
@@ -12,15 +11,6 @@ function Wrapper(props: { child: ReactNode }) {
 	const { pathname } = useLocation();
 	const [isLoading, setIsLoading] = useState(false);
 	const [isLogin, setIsLogin] = useState(false);
-
-	function checkLogin() {
-		if (needLoginUrls.includes(pathname)) {
-			setIsLogin(false);
-		} else {
-			setIsLogin(true);
-		}
-		setIsLoading(false);
-	}
 
 	function checkView() {
 		return <>{!isLogin ? <SignIn /> : <>{child}</>}</>;
@@ -42,11 +32,6 @@ function Wrapper(props: { child: ReactNode }) {
 	const showView = () => {
 		return isLoading ? showLoadingView() : checkView();
 	};
-
-	useEffect(() => {
-		checkLogin();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
 
 	return (
 		<>

@@ -44,12 +44,20 @@ function SignIn() {
 						autoComplete="current-password"
 					/>
 					<FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
-					<Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+					<Button
+						type="submit"
+						onClick={() => {
+							window.open('http://localhost:8180/sign-jwt/signin', '_self');
+						}}
+						fullWidth
+						variant="contained"
+						sx={{ mt: 3, mb: 2 }}
+					>
 						Sign In
 					</Button>
 					<Grid container>
 						<Grid item xs>
-							<Link href="#section" variant="body2">
+							<Link href="http://localhost:8010/sign-jwt/swagger-ui.html" variant="body2">
 								Forgot password?
 							</Link>
 						</Grid>
