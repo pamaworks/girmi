@@ -1,7 +1,9 @@
 server:
-  port: 443
+  port: 8080
   servlet:
     context-path: /
+    session:
+      timeout: 600000
   ssl:
     key-store: girmi-keystore.p12
     key-store-type: PKCS12
@@ -9,36 +11,60 @@ server:
     key-alias: girmi-keystore
 
 spring:
+  application:
+    name: gateway
+  session:
+    timeout: 30
+    store-type: redis
+    redis:
+      flush-mode: on_save
+      namespace: girmi:session
+    data:
+      redis:
+        repositories:
+          enabled: true
+        host: localhost
+        password: develop
+        port: 6379
   main:
     web-application-type: reactive
+    allow-bean-definition-overriding: true
   cloud:
     gateway:
       default-filters:
-        - name: GlobalFilter
-          args:
-            baseMessage: Girmi Gateway GlobalFilter
-            preLogger: true
-            postLogger: true
+        - DedupeResponseHeader=Access-Control-Allow-Origin
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: 'https://localhost:3000'
+            allowedHeaders: '*'
+            allowedMethods:
+            - GET
+            - POST
       routes:
         - id: front
           uri: http://localhost:3000
           predicates:
-            - Path=/**
-        - id: service-common
-          uri: http://localhost:8030
+            - Path=/main
+        - id: sign-jwt
+          uri: http://localhost:8010
           predicates:
-            - Path=/service-common/**
-        - id: data-mybatis
-          uri: http://localhost:8041
-          predicates:
-            - Path=/data-mybatis/**
-        - id: data-jpa
-          uri: http://localhost:8042
-          predicates:
-            - Path=/data-jpa/**
+            - Path=/sign-jwt/**
 
+springdoc:
+  enable-native-support: true
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    urls:
+      - url: /sign-jwt/v3/api-docs
+        name: SignJwt
+        primaryName: SignJwt
 
-
+jwt:
+  token-validity-in-seconds: 60
 
 logging:
   config: classpath:config/logging.xml
