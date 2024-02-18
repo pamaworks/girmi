@@ -51,7 +51,7 @@ function Sidebar() {
 				Social
 			</Typography>
 			{social.map((network) => (
-				<Link display="block" variant="body1" href="#" key={network.name} sx={{ mb: 0.5 }}>
+				<Link display="block" variant="body1" href="#none" key={network.name} sx={{ mb: 0.5 }}>
 					<Stack direction="row" spacing={1} alignItems="center">
 						<network.icon />
 						<span>{network.name}</span>

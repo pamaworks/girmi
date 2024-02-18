@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import {
 	Avatar,
 	Box,
@@ -12,8 +13,28 @@ import {
 	Link,
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../modules';
+import { signinUserAsync } from '../../modules/sign';
+import { setCookie } from '../../lib/cookie';
 
 function SignIn() {
+	const { data, loading, error } = useSelector((state: RootState) => state.signin.signin);
+	const dispatch = useDispatch();
+
+	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		const formData = new FormData(event.currentTarget);
+		dispatch(signinUserAsync.request(formData));
+	};
+
+	useEffect(() => {
+		if (data?.token) {
+			setCookie('token-jwt', data.token, {});
+			window.open('/', '_self');
+		}
+	}, [loading, data]);
+
 	return (
 		<Container component="main" maxWidth="xs">
 			<CssBaseline />
@@ -31,28 +52,29 @@ function SignIn() {
 				<Typography component="h1" variant="h5">
 					Sign in
 				</Typography>
-				<Box component="form" noValidate sx={{ mt: 1 }}>
-					<TextField margin="normal" required fullWidth id="email" label="ID" name="ID" autoComplete="ID" autoFocus />
+				<Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit}>
 					<TextField
 						margin="normal"
 						required
 						fullWidth
-						name="password"
+						id="userId"
+						label="userId"
+						name="userId"
+						autoComplete="ID"
+						autoFocus
+					/>
+					<TextField
+						margin="normal"
+						required
+						fullWidth
+						name="userPw"
 						label="Password"
 						type="password"
-						id="password"
+						id="userPw"
 						autoComplete="current-password"
 					/>
 					<FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
-					<Button
-						type="submit"
-						onClick={() => {
-							window.open('http://localhost:8180/sign-jwt/signin', '_self');
-						}}
-						fullWidth
-						variant="contained"
-						sx={{ mt: 3, mb: 2 }}
-					>
+					<Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
 						Sign In
 					</Button>
 					<Grid container>
