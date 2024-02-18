@@ -1,5 +1,6 @@
 package com.girmi.jwt.apis.authentication;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.girmi.jwt.clients.data.jpa.JpaUserClient;
 import com.girmi.jwt.config.token.TokenProvider;
 import com.girmi.jwt.filter.JwtFilter;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +24,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import static com.girmi.constants.SignConstant.SESSION_KEY_TOKEN_JWT;
+import static com.girmi.constants.SignConstant.*;
 
 @Slf4j
 @Service
@@ -34,6 +36,9 @@ public class AuthenticationService {
 
     @Autowired
     JpaUserClient jpaUserClient;
+
+    @Autowired
+    RedisTemplate<String, String> redisTemplate;
 
     public ResponseEntity<SignIn> authenticate(HttpServletRequest request, String userId, String userPw) throws Exception {
 
@@ -55,11 +60,10 @@ public class AuthenticationService {
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-            HttpSession session = request.getSession();
-            session.setAttribute(SESSION_KEY_TOKEN_JWT, jwt);
-
             User user = new User();
             user.setUserNm(userInfo.getUserNm());
+
+            redisTemplate.opsForValue().set(jwt, new ObjectMapper().writeValueAsString(user));
 
             return new ResponseEntity<SignIn>(new SignIn(user, jwt), httpHeaders, HttpStatus.OK);
 
@@ -72,7 +76,7 @@ public class AuthenticationService {
     public ResponseEntity<Boolean> isSignInUser(HttpServletRequest request) throws Exception {
         HttpSession session = request.getSession();
 
-        String token = (String) session.getAttribute(SESSION_KEY_TOKEN_JWT);
+        String token = request.getHeader(SESSION_KEY_TOKEN_JWT);
 
         log.info(session.getId());
         log.info("token : {}" , token);
@@ -87,6 +91,25 @@ public class AuthenticationService {
             return new ResponseEntity<Boolean>(false, HttpStatus.UNAUTHORIZED);
         }
 
+    }
+
+    public ResponseEntity<User> userInfo(HttpServletRequest request) throws Exception {
+        try {
+            String token = request.getHeader(SESSION_KEY_TOKEN_JWT);
+            String userInfoStr = redisTemplate.opsForValue().get(token);
+
+            if (!StringUtils.hasText(token) && !StringUtils.hasText(userInfoStr)
+                    && tokenProvider.validateToken(token)) {
+                return new ResponseEntity<User>(null, null,  HttpStatus.NOT_FOUND);
+            }
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            User user = objectMapper.readValue(userInfoStr, User.class);
+            return new ResponseEntity<User>(user, null,  HttpStatus.OK);
+        }catch (Exception e) {
+            log.error(ExceptionUtils.getStackTrace(e));
+            return new ResponseEntity<User>(null, null,  HttpStatus.NOT_FOUND);
+        }
     }
 
 }

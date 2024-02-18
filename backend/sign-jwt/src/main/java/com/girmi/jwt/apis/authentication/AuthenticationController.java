@@ -1,22 +1,22 @@
 package com.girmi.jwt.apis.authentication;
 
 
-import com.girmi.jwt.apis.user.UserService;
-import com.girmi.jwt.models.RequestUser;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.girmi.jwt.models.SignIn;
-import com.girmi.jwt.util.EncryptUtil;
+import com.girmi.models.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static com.girmi.constants.SignConstant.SESSION_KEY_TOKEN_JWT;
+import static com.girmi.constants.SignConstant.SESSION_KEY_USERINFO;
 
 @Slf4j
 @RestController
@@ -45,6 +45,12 @@ public class AuthenticationController {
 
 
         return authenticationService.isSignInUser(request);
+    }
+
+    @Operation(description = "로그인 정보 조회")
+    @GetMapping("/userInfo")
+    public ResponseEntity<User> userInfo(HttpServletRequest request) throws Exception {
+        return authenticationService.userInfo(request);
     }
 
 }

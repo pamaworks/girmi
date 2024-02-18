@@ -2,13 +2,16 @@ server:
   port: 8010
   servlet:
     context-path: /sign-jwt
+    session:
+      tracking-modes:
+        - cookie
 
 jwt:
   token-validity-in-seconds: 3000
 
 spring:
   session:
-    timeout: 30
+    timeout: 60
     redis:
       namespace: girmi:session
   data:
