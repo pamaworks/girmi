@@ -1,11 +1,15 @@
 import { combineReducers } from 'redux';
+import { all } from 'redux-saga/effects';
 import github from './github/reducer';
 import { githubSaga } from './github';
-import { all } from 'redux-saga/effects';
-
+import { signin, signup, userInfo } from './sign/reducer';
+import { signSaga } from './sign';
 
 const rootReducer = combineReducers({
-  github
+	github,
+	signin,
+	signup,
+	userInfo,
 });
 
 // 루트 리듀서를 내보내주세요.
@@ -16,5 +20,5 @@ export default rootReducer;
 export type RootState = ReturnType<typeof rootReducer>;
 
 export function* rootSaga() {
-  yield all([githubSaga()]);
+	yield all([githubSaga(), signSaga()]);
 }

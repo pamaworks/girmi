@@ -2,11 +2,15 @@ import axios, { Axios } from 'axios';
 
 const serviceCommonUrl = '';
 const loginUrl = '';
+const gwUrl = 'https://localhost:8080';
 
-export function getInstance() {
-	return axios.create({
-		baseURL: serviceCommonUrl,
-	});
+export const keySign = 'sign';
+const url = {
+	sign: `${gwUrl}/sign-jwt`,
+};
+
+export function getCommonInstance(contextName: string) {
+	return axios.create({ baseURL: `${url[contextName]}` });
 }
 
 export function getSignInstance(token: string): Axios {
