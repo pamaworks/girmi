@@ -20,7 +20,7 @@ public class UserController {
     @Operation(description = "Search User By UserId", parameters = {
             @Parameter(name = "userId", description = "User Id")
     })
-    @GetMapping("/user")
+    @GetMapping(value = "/user")
     public User user(@RequestParam(value = "userId") String userId) throws Exception {
         return userService.getUser(userId);
     }
@@ -37,13 +37,13 @@ public class UserController {
     }
 
     @Operation(description = "Insert User")
-    @PostMapping("/user")
+    @PostMapping(value = "/user")
     public void user(@RequestBody User user) throws Exception{
         userService.insertUser(user);
     }
 
     @Operation(description = "Insert User Authorities")
-    @PostMapping("/userAuthorities")
+    @PostMapping(value = "/userAuthorities")
     public void userAuthority(@RequestBody List<UserAuthority> userAuthority) throws Exception{
         userService.insertUserAuthorities(userAuthority);
     }
@@ -51,7 +51,7 @@ public class UserController {
     @Operation(description = "Get User Authorities", parameters = {
             @Parameter(name = "userId", description = "User Id")
     })
-    @GetMapping("/userAuthorities")
+    @GetMapping(value = "/userAuthorities")
     public List<String> userAuthorities(@RequestParam(value = "userId") String userId) throws Exception {
         return userService.getUserAuthorities(userId);
     }
