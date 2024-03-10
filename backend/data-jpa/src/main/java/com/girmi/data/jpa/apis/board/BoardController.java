@@ -29,7 +29,7 @@ public class BoardController {
     }
 
     @Operation(description = "board content")
-    @PostMapping(value = "/{brdIdx}")
+    @GetMapping(value = "/{brdIdx}")
     public Board getBoard(@PathVariable(name = "brdIdx") Integer brdIdx) throws Exception {
         return boardService.getBoard(brdIdx);
     }
@@ -37,7 +37,7 @@ public class BoardController {
 
     @Operation(description = "save board")
     @PostMapping(value = "/save")
-    public ResponseEntity<String> saveBoard(Board board) throws Exception {
+    public ResponseEntity<String> saveBoard(@RequestBody Board board) throws Exception {
 
         return boardService.saveBoard(board);
     }

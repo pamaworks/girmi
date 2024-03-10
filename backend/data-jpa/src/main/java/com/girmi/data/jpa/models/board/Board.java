@@ -1,10 +1,8 @@
 package com.girmi.data.jpa.models.board;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -13,6 +11,7 @@ import lombok.Data;
 public class Board {
     @Id
     @Column(name = "BRD_IDX", unique = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(name = "brdIdx", description = "brdIdx")
     private Integer brdIdx;
 
@@ -30,14 +29,17 @@ public class Board {
 
     @Column(name = "BRD_IMG_URL")
     @Schema(name = "brdImgUrl", description = "board image url")
+    @JsonIgnore
     private String brdImgUrl;
 
     @Column(name = "BRD_IMG_TEXT")
     @Schema(name = "brdImgText", description = "board image text")
+    @JsonIgnore
     private String brdImgText;
 
     @Column(name = "BRD_LINK_TEXT")
     @Schema(name = "brdLinkText", description = "board link text")
+    @JsonIgnore
     private String brdLinkText;
 
     @Column(name = "USE_YN")

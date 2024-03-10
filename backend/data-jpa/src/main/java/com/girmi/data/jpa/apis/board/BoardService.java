@@ -3,6 +3,7 @@ package com.girmi.data.jpa.apis.board;
 import com.girmi.constants.CodeConstant;
 import com.girmi.data.jpa.models.board.Board;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -21,7 +22,9 @@ public class BoardService {
 
     public List<Board> getBoardList(String brdType) throws Exception {
         Board board = new Board();
-        board.setBrdType(brdType);
+        if (StringUtils.isEmpty(brdType)) {
+            board.setBrdType(brdType);
+        }
         board.setUseYn("Y");
 
         Example<Board> example = Example.of(board);
@@ -38,6 +41,7 @@ public class BoardService {
             boardRepository.save(board);
             return new ResponseEntity<>(CodeConstant.RESULT_SUCCESS, HttpStatus.OK);
         }catch (Exception e){
+            log.error(ExceptionUtils.getStackTrace(e));
             return new ResponseEntity<>(CodeConstant.RESULT_FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

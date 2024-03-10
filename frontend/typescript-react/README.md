@@ -2,5 +2,8 @@
 
 해야할거
 - app-rewind
-- eslint 셋팅
 - build 정책
+
+천천히 할꺼
+- 가입기능
+- 자동로그인
