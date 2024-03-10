@@ -1,0 +1,58 @@
+const page = ref({ title: 'Board' });
+const breadcrumbs = ref([
+  {
+    title: 'Contents',
+    disabled: false,
+    href: '#'
+  },
+  {
+    title: 'Board',
+    disabled: true,
+    href: '#'
+  }
+]);
+
+const { handleSubmit } = useForm({
+  validationSchema: {
+    brdType(value: string) {
+      if (value) return true;
+
+      return 'Please Select Post Type';
+    },
+    brdTitle(value: string) {
+      if (value) return true;
+
+      return 'Please input board title';
+    },
+    brdContent(value: string) {
+      if (value) return true;
+
+      return 'Please input board content';
+    }
+  }
+});
+const brdType = useField('brdType');
+const brdTitle = useField('brdTitle');
+const brdContent = useField('brdContent');
+
+const brdTypes = ref(['MAINPOST', 'FEATUREPOST']);
+
+const registBoard = handleSubmit((values: any) => {
+  const data: Board = values;
+  data.useYn = 'Y';
+  saveBoard(data as Board)
+    .then((res: any) => {
+      if (res) {
+        router.push({ name: 'BoardList' });
+      }
+    })
+    .catch((err: any) => alert('error'));
+});
+
+
+onMounted(() => {
+    if(props.brdIdx !== 'write') {
+      getBoard(props.brdIdx).then((res: Board) => {
+    }
+    })
+  });
