@@ -3,6 +3,13 @@
   <v-row>
     <v-col cols="12" md="12">
       <UiParentCard title="Board">
+        <v-row>
+          <v-col cols="12">
+            <v-btn style="float: right" @click="useBoard.isOpenBrdTypeModal = true">Board Type</v-btn>
+            <board-type></board-type>
+          </v-col>
+        </v-row>
+
         <v-table density="compact" class="h-100">
           <thead>
             <tr>
@@ -12,10 +19,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in boardList" :key="item.brdIdx">
+            <tr v-for="item in useBoard.boardList" :key="item.brdIdx">
               <td>
                 <router-link :to="{ name: 'BoardEdit', params: { brdIdx: item.brdIdx } }">
-                  {{ item.brdType }}
+                  {{ item.boardType.brdNm }}
                 </router-link>
               </td>
               <td>
@@ -43,24 +50,27 @@ a {
 </style>
 
 <script lang="ts">
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted } from 'vue';
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import UiParentCard from '@/components/shared/UiParentCard.vue';
-import { deleteBoard, getBoardList } from '@/apis/board';
+import BoardType from './BoardType.vue';
+import { useBoardStore } from '@/stores/board';
+import type { Board } from '@/types/models/board';
+const useBoard = useBoardStore();
 export default {
   name: 'BoardList',
+  components: {
+    BaseBreadcrumb,
+    UiParentCard,
+    BoardType
+  },
   methods: {
     reload() {},
     addBtn() {
       this.$router.push({ name: 'BoardEdit', params: { brdIdx: 'write' } });
     },
     deleteBoard(brdIdx: number) {
-      deleteBoard(brdIdx).then((status: number) => {
-        console.log(status);
-        if (status == 200) {
-          this.$router.go(0);
-        }
-      });
+      useBoard.deleteBoard(brdIdx);
     }
   },
   setup() {
@@ -77,20 +87,18 @@ export default {
         href: '#'
       }
     ]);
-
-    return { page, breadcrumbs, BaseBreadcrumb, UiParentCard };
+    return {
+      page,
+      breadcrumbs
+    };
   },
   data() {
-    const boardList = ref([]);
-
     onMounted(() => {
-      getBoardList().then((res) => {
-        boardList.value = res;
-      });
+      useBoard.getBoardList();
     });
 
     return {
-      boardList
+      useBoard
     };
   }
 };

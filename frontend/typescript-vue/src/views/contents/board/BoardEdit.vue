@@ -5,13 +5,21 @@
       <UiParentCard title="Board Edit">
         <v-form>
           <div>
-            <v-select :items="brdTypes" v-model="brdType.value" density="compact" label="Board Type"></v-select>
+            <v-select
+              name="brdType"
+              :items="useBoard.boardTypeList"
+              item-title="brdNm"
+              item-value="brdType"
+              v-model="brdType.value"
+              density="compact"
+              label="Board Type"
+            ></v-select>
           </div>
           <div>
-            <v-text-field v-model="brdTitle.value"></v-text-field>
+            <v-text-field name="brdTitle" v-model="brdTitle.value"></v-text-field>
           </div>
           <div>
-            <v-textarea v-model="brdContent.value"></v-textarea>
+            <v-textarea name="brdContent" v-model="brdContent.value"></v-textarea>
           </div>
           <v-btn variant="outlined" @click="registBoard">Save</v-btn>
           <v-btn variant="outlined" class="float-right" :to="{ name: 'BoardList' }">List</v-btn>
@@ -22,18 +30,23 @@
 </template>
 
 <script lang="ts">
-import { ref, onMounted } from 'vue';
-import { router } from '@/router';
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import UiParentCard from '@/components/shared/UiParentCard.vue';
+import { ref, onMounted, watch } from 'vue';
+import { router } from '@/router';
 import { getBoard, saveBoard } from '@/apis/board';
 import { useField, useForm } from 'vee-validate';
 import { type Board } from '@/types/models/board';
-
+import { useBoardStore } from '@/stores/board';
+const useBoard = useBoardStore();
 export default {
   name: 'BoardEdit',
   props: ['brdIdx'],
   methods: {},
+  components: {
+    BaseBreadcrumb,
+    UiParentCard
+  },
   setup(props: any) {
     const page = ref({ title: 'Board' });
     const breadcrumbs = ref([
@@ -72,21 +85,8 @@ export default {
     const brdTitle = useField('brdTitle');
     const brdContent = useField('brdContent');
 
-    const brdTypes = ref(['MAINPOST', 'FEATUREPOST']);
-
-    const registBoard = handleSubmit((values: any) => {
-      const data: Board = values;
-      data.useYn = 'Y';
-      if (props.brdIdx !== 'write') {
-        data.brdIdx = props.brdIdx;
-      }
-      saveBoard(data as Board)
-        .then((res: any) => {
-          if (res) {
-            router.push({ name: 'BoardList' });
-          }
-        })
-        .catch((err: any) => alert('error'));
+    const registBoard = handleSubmit((board: any) => {
+      useBoard.saveBoard(board, props.brdIdx);
     });
 
     return {
@@ -97,7 +97,6 @@ export default {
       brdType,
       brdTitle,
       brdContent,
-      brdTypes,
       registBoard
     };
   },
@@ -105,19 +104,24 @@ export default {
     const brdTitle = useField('brdTitle');
     const brdContent = useField('brdContent');
     const brdType = useField('brdType');
-
     onMounted(() => {
       const brdIdx = props.brdIdx;
       if (brdIdx !== 'write') {
-        getBoard(brdIdx).then((res: Board) => {
-          brdTitle.value.value = res.brdTitle;
-          brdContent.value.value = res.brdContent;
-          brdType.value.value = res.brdType;
+        getBoard(brdIdx).then((board: Board) => {
+          brdTitle.value.value = board.brdTitle;
+          brdContent.value.value = board.brdContent;
+          brdType.value.value = board.boardType.brdType;
         });
       }
+      useBoard.getBoardTypeList();
     });
 
-    return { brdTitle, brdContent, brdType };
+    return {
+      brdTitle,
+      brdType,
+      brdContent,
+      useBoard
+    };
   }
 };
 </script>
