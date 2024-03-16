@@ -2,6 +2,7 @@ package com.girmi.data.jpa.apis.board;
 
 import com.girmi.constants.CodeConstant;
 import com.girmi.data.jpa.models.board.Board;
+import com.girmi.data.jpa.models.board.BoardType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -20,10 +21,15 @@ public class BoardService {
     @Autowired
     BoardRepository boardRepository;
 
+    @Autowired
+    BoardTypeRepository boardTypeRepository;
+
     public List<Board> getBoardList(String brdType) throws Exception {
         Board board = new Board();
         if (StringUtils.isEmpty(brdType)) {
-            board.setBrdType(brdType);
+            BoardType type = new BoardType();
+            type.setBrdType(brdType);
+            board.setBoardType(type);
         }
         board.setUseYn("Y");
 
@@ -58,6 +64,32 @@ public class BoardService {
             return new ResponseEntity<>(CodeConstant.RESULT_FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+    }
+
+    public List<BoardType> getBoardTypeList() throws Exception {
+        Example<BoardType> example = Example.of(new BoardType());
+        return boardTypeRepository.findAll(example);
+    }
+
+    public ResponseEntity<String> saveBoardType(BoardType boardType) throws Exception {
+        try {
+            boardTypeRepository.save(boardType);
+            return new ResponseEntity<String>(CodeConstant.RESULT_SUCCESS, HttpStatus.OK);
+        }catch (Exception e) {
+            log.error(ExceptionUtils.getStackTrace(e));
+            return new ResponseEntity<String>(CodeConstant.RESULT_FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    public ResponseEntity<String> deleteBoardType(String boardType) throws Exception {
+        try {
+            boardTypeRepository.deleteById(boardType);
+            return new ResponseEntity<String>(CodeConstant.RESULT_SUCCESS, HttpStatus.OK);
+        }catch (Exception e) {
+            log.error(ExceptionUtils.getStackTrace(e));
+            return new ResponseEntity<String>(CodeConstant.RESULT_FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

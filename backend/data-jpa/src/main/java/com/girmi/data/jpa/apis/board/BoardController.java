@@ -1,6 +1,7 @@
 package com.girmi.data.jpa.apis.board;
 
 import com.girmi.data.jpa.models.board.Board;
+import com.girmi.data.jpa.models.board.BoardType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +35,6 @@ public class BoardController {
         return boardService.getBoard(brdIdx);
     }
 
-
     @Operation(description = "save board")
     @PostMapping(value = "/save")
     public ResponseEntity<String> saveBoard(@RequestBody Board board) throws Exception {
@@ -46,6 +46,24 @@ public class BoardController {
     @DeleteMapping(value = "/{brdIdx}/delete")
     public ResponseEntity<String> deleteBoard(@PathVariable(name = "brdIdx") Integer brdIdx) throws Exception {
         return boardService.deleteBoard(brdIdx);
+    }
+
+    @Operation(description = "get board type list")
+    @GetMapping(value = "/type/list")
+    public List<BoardType> getBoardType() throws Exception {
+        return boardService.getBoardTypeList();
+    }
+
+    @Operation(description = "insert board type")
+    @PostMapping(value = "/type/save")
+    public ResponseEntity<String> saveBoardType(@RequestBody BoardType boardType) throws Exception {
+        return boardService.saveBoardType(boardType);
+    }
+
+    @Operation(description = "delete board type")
+    @DeleteMapping(value = "/type/{brdType}/delete")
+    public ResponseEntity<String> deleteBoardType(@PathVariable(name = "brdType") String boardType) throws Exception {
+        return boardService.deleteBoardType(boardType);
     }
 
 }

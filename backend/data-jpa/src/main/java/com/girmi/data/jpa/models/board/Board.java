@@ -15,16 +15,12 @@ public class Board {
     @Schema(name = "brdIdx", description = "brdIdx")
     private Integer brdIdx;
 
-    @Column(name = "BRD_TYPE", nullable = false)
-    @Schema(name = "brdType", description = "board type")
-    private String brdType;
-
     @Column(name = "BRD_CONTENT", nullable = false)
     @Schema(name = "brdContent", description = "Board Content")
     private String brdContent;
 
     @Column(name = "BRD_TITLE")
-    @Schema(name = "brdTitle", description = "board type")
+    @Schema(name = "brdTitle", description = "board title")
     private String brdTitle;
 
     @Column(name = "BRD_IMG_URL")
@@ -45,5 +41,9 @@ public class Board {
     @Column(name = "USE_YN")
     @Schema(name = "useYn", description = "use yn", defaultValue = "Y")
     private String useYn;
+
+    @OneToOne
+    @JoinColumn(name = "BRD_TYPE", referencedColumnName = "BRD_TYPE")
+    private BoardType boardType;
 
 }
