@@ -1,10 +1,10 @@
-import type { Board, BoardType } from '@/types/models/board';
+import type { Board, BoardPaging, BoardType } from '@/types/models/board';
 import { getCommonInstance } from './instance';
 
 const apisDataJpa = 'dataJpa';
 
-export async function getBoardList() {
-  const result = await getCommonInstance(apisDataJpa).get<Board[]>('/board/list');
+export async function getBoardList(param: any) {
+  const result = await getCommonInstance(apisDataJpa).get<BoardPaging>(`/board/list?pageNo=${param.pageNo}&rowSize=${param.rowSize}`);
   return result.data;
 }
 

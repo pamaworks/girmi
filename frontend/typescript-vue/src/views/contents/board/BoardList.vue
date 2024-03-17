@@ -19,7 +19,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in useBoard.boardList" :key="item.brdIdx">
+            <tr v-for="item in useBoard.boardPaging.boardList" :key="item.brdIdx">
               <td>
                 <router-link :to="{ name: 'BoardEdit', params: { brdIdx: item.brdIdx } }">
                   {{ item.boardType.brdNm }}
@@ -36,6 +36,16 @@
             </tr>
           </tbody>
         </v-table>
+        <r-row>
+          <v-col>
+            <v-pagination
+              v-model="useBoard.param.pageNo"
+              :length="useBoard.boardPaging.page ?? 0"
+              rounded="circle"
+              @update:model-value="goPage"
+            ></v-pagination>
+          </v-col>
+        </r-row>
         <v-btn variant="outlined" class="float-right" @click="addBtn">Add</v-btn>
       </UiParentCard>
     </v-col>
@@ -50,7 +60,7 @@ a {
 </style>
 
 <script lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import UiParentCard from '@/components/shared/UiParentCard.vue';
 import BoardType from './BoardType.vue';
@@ -66,6 +76,10 @@ export default {
   },
   methods: {
     reload() {},
+    goPage(pageNo: number) {
+      useBoard.param.pageNo = pageNo;
+      useBoard.getBoardList();
+    },
     addBtn() {
       this.$router.push({ name: 'BoardEdit', params: { brdIdx: 'write' } });
     },
@@ -87,6 +101,7 @@ export default {
         href: '#'
       }
     ]);
+
     return {
       page,
       breadcrumbs

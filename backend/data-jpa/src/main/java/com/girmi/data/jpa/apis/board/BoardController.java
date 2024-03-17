@@ -1,6 +1,7 @@
 package com.girmi.data.jpa.apis.board;
 
 import com.girmi.data.jpa.models.board.Board;
+import com.girmi.data.jpa.models.board.BoardPaging;
 import com.girmi.data.jpa.models.board.BoardType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -20,13 +21,17 @@ public class BoardController {
     BoardService boardService;
 
     @Operation(description = "board list" ,parameters = {
-            @Parameter(name = "brdType", required = false)
+            @Parameter(name = "brdType", required = false),
+            @Parameter(name = "pageNo", example = "1"),
+            @Parameter(name = "rowSize", example = "2")
     })
     @GetMapping(value = "/list")
-    public List<Board> getBoardList(
-            @RequestParam(name = "brdType", required = false) String brdType
+    public BoardPaging getBoardList(
+            @RequestParam(name = "brdType", required = false) String brdType,
+            @RequestParam(name = "pageNo") int pageNo,
+            @RequestParam(name = "rowSize") int rowSize
     ) throws Exception{
-        return boardService.getBoardList(brdType);
+        return boardService.getBoardList(brdType, pageNo, rowSize);
     }
 
     @Operation(description = "board content")

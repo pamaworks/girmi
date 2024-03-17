@@ -2,12 +2,13 @@ package com.girmi.data.jpa.apis.board;
 
 import com.girmi.constants.CodeConstant;
 import com.girmi.data.jpa.models.board.Board;
+import com.girmi.data.jpa.models.board.BoardPaging;
 import com.girmi.data.jpa.models.board.BoardType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class BoardService {
     @Autowired
     BoardTypeRepository boardTypeRepository;
 
-    public List<Board> getBoardList(String brdType) throws Exception {
+    public BoardPaging getBoardList(String brdType, int pageNo, int rowSize) throws Exception {
         Board board = new Board();
         if (StringUtils.isEmpty(brdType)) {
             BoardType type = new BoardType();
@@ -33,8 +34,15 @@ public class BoardService {
         }
         board.setUseYn("Y");
 
+        BoardPaging boardPaging = new BoardPaging();
         Example<Board> example = Example.of(board);
-        return boardRepository.findAll(example);
+        long totalCount = boardRepository.count(example);
+        boardPaging.setTotalCount(totalCount);
+
+        Page<Board> boardList = boardRepository.findAll(example, PageRequest.of((pageNo-1), rowSize, Sort.by("brdIdx").descending()));
+        boardPaging.setBoardList(boardList.get().toList());
+
+        return boardPaging;
 
     }
 

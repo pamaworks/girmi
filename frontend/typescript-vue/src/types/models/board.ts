@@ -1,3 +1,9 @@
+export type BoardPaging = {
+  totalCount: number;
+  page: number;
+  boardList: Board[];
+};
+
 export type Board = {
   brdIdx?: number;
   brdType?: string;

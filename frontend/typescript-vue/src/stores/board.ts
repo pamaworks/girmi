@@ -1,12 +1,13 @@
 import { deleteBoard, deleteBoardType, getBoard, getBoardList, getBoardTypeList, saveBoard, saveBoardType } from '@/apis/board';
 import { router } from '@/router';
-import type { Board, BoardType } from '@/types/models/board';
+import type { Board, BoardType, BoardPaging } from '@/types/models/board';
 import { defineStore } from 'pinia';
 
 export const useBoardStore = defineStore({
   id: 'board',
   state: () => ({
-    boardList: [] as Board[],
+    param: { pageNo: 1, rowSize: 2 },
+    boardPaging: {} as BoardPaging,
     board: {} as Board,
     loadingBoardList: false as boolean,
     isOpenBrdTypeModal: false as boolean,
@@ -15,7 +16,8 @@ export const useBoardStore = defineStore({
   actions: {
     async getBoardList() {
       this.loadingBoardList = true;
-      this.boardList = await getBoardList();
+      this.boardPaging = await getBoardList(this.param);
+      this.boardPaging.page = Number((this.boardPaging.totalCount / this.param.rowSize).toFixed(0));
       this.loadingBoardList = false;
     },
     async getBoard(brdIdx: number) {
