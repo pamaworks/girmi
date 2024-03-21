@@ -9,7 +9,7 @@ import java.util.List;
 
 import static com.girmi.constants.RestUrlRoot.DATA_MYBATIS;
 
-@FeignClient(url = "${" + DATA_MYBATIS + ".greeting}", name = "test")
+@FeignClient(url = "${" + DATA_MYBATIS + ".greeting}", name = "greeting")
 public interface GreetingClient {
 
     @GetMapping("/getGreeting")

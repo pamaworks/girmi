@@ -15,7 +15,7 @@ rest-server:
   apis:
     data:
       mybatis:
-        test: http://localhost:8041/data-mybatis/greeting
+        greeting: http://localhost:8041/data-mybatis/greeting
 
 logging:
   config: classpath:config/logging.xml
