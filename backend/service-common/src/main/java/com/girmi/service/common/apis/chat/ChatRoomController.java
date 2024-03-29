@@ -21,7 +21,7 @@ public class ChatRoomController {
     }
 
     @Operation(description = "채팅방 개설")
-    @PutMapping("/room")
+    @PutMapping("/create")
     public ChatRoom addRoom(@RequestParam(value = "roomNm") String roomNm) throws Exception {
         return stompChatService.createChatRoom(roomNm);
     }

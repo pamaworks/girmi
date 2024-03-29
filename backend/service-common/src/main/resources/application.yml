@@ -3,6 +3,9 @@ server:
   servlet:
     context-path: /service-common
 
+cors:
+  allow:
+    origins: http://localhost:4000
 
 springdoc:
   api-docs:
