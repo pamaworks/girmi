@@ -24,6 +24,8 @@
     "lodash": "4.17.21",
     "pinia": "2.1.7",
     "remixicon": "4.1.0",
+    "sockjs-client": "^1.6.1",
+    "stompjs": "^2.3.3",
     "vee-validate": "4.12.5",
     "vite-plugin-vuetify": "2.0.1",
     "vue": "3.4.19",
@@ -34,6 +36,7 @@
     "vue3-print-nb": "0.1.4",
     "vuetify": "3.5.4",
     "webpack-plugin-vuetify": "^3.0.1",
+    "webstomp-client": "^1.2.6",
     "yup": "1.3.3"
   },
   "devDependencies": {
@@ -41,6 +44,8 @@
     "@rushstack/eslint-patch": "1.7.2",
     "@types/chance": "1.1.6",
     "@types/node": "^20.11.18",
+    "@types/sockjs-client": "^1.5.4",
+    "@types/stompjs": "^2.3.9",
     "@vitejs/plugin-vue": "5.0.4",
     "@vue/eslint-config-prettier": "9.0.0",
     "@vue/eslint-config-typescript": "12.0.0",

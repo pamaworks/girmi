@@ -28,6 +28,16 @@ const MainRoutes = {
       props: true
     },
     {
+      name: 'ChatMain',
+      path: '/contents/chat/main',
+      component: () => import('@/views/contents/chat/ChatMain.vue')
+    },
+    {
+      name: 'ChatRoom',
+      path: '/contents/chat/room',
+      component: () => import('@/views/contents/chat/ChatRoom.vue')
+    },
+    {
       name: 'Starter',
       path: '/starter',
       component: () => import('@/views/StarterPage.vue')

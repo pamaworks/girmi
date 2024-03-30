@@ -5,6 +5,9 @@ import vuetify from 'vite-plugin-vuetify';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  define: {
+    global: {}
+  },
   plugins: [
     vue({
       template: {

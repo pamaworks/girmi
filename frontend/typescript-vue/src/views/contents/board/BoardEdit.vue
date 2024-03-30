@@ -32,9 +32,8 @@
 <script lang="ts">
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import UiParentCard from '@/components/shared/UiParentCard.vue';
-import { ref, onMounted, watch } from 'vue';
-import { router } from '@/router';
-import { getBoard, saveBoard } from '@/apis/board';
+import { ref, onMounted } from 'vue';
+import { getBoard } from '@/apis/board';
 import { useField, useForm } from 'vee-validate';
 import { type Board } from '@/types/models/board';
 import { useBoardStore } from '@/stores/board';

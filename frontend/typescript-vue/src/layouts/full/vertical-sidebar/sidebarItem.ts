@@ -40,6 +40,11 @@ const sidebarItem: menu[] = [
     icon: KeyIcon,
     to: '/contents/board/list'
   },
+  {
+    title: 'Chat',
+    icon: KeyIcon,
+    to: '/contents/chat/main'
+  },
   { divider: true },
   { header: 'Pages' },
   {
