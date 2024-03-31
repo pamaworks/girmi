@@ -4,6 +4,8 @@ const serviceCommonUrl = '';
 const loginUrl = '';
 const gwUrl = 'https://localhost:8080';
 
+export const apisServiceCommon = 'serviceCommon';
+
 export const keySign = 'sign';
 const url = {
   dataJpa: 'http://localhost:8042/data-jpa',

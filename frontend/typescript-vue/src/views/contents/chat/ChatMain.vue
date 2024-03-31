@@ -7,7 +7,7 @@
           <v-col cols="12" md="12">
             <v-card title="Chatting Room" width="100%">
               <v-col cols="12" md="3">
-                <v-text-field name="user" label="User Name" :rules="[rules.user]" v-model="useChat.user"></v-text-field>
+                <v-text-field ref="user" name="user" label="User Name" :rules="[rules.user]" v-model="useChat.user"></v-text-field>
               </v-col>
               <v-list lines="one" v-if="useChat.roomList.length == 0">
                 <v-list-item>Empty</v-list-item>
@@ -90,6 +90,8 @@ export default {
       if (useChat.user !== '') {
         useChat.chatRoom = room;
         router.push('/contents/chat/room');
+      } else {
+        this.$refs['user'].focus();
       }
     }
   },
