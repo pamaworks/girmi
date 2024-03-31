@@ -27,7 +27,7 @@ public class ChatRoomController {
     }
 
     @Operation(description = "사용자있는지 확인")
-    @GetMapping("/room/{roomId}/{user}")
+    @GetMapping("/{roomId}/{user}")
     public Boolean isExistUser(@PathVariable(value = "roomId") String roomId, @PathVariable(value = "user") String user) throws Exception {
         return stompChatService.isExistUser(roomId, user);
     }

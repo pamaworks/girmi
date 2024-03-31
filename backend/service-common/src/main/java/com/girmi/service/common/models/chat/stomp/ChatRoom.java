@@ -12,6 +12,8 @@ public class ChatRoom {
     private String roomId;
     private String roomNm;
 
+    private int userCnt;
+
     public static ChatRoom create(String name){
         ChatRoom room = new ChatRoom();
 

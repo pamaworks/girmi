@@ -2,11 +2,13 @@ package com.girmi.service.common.apis.chat;
 
 import com.girmi.service.common.models.chat.stomp.ChatRoom;
 import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class StompChatService {
 
@@ -21,6 +23,10 @@ public class StompChatService {
 
     public List<ChatRoom> findAllRooms(){
         List<ChatRoom> result = new ArrayList<>(chatRoom.values());
+        for (ChatRoom room: result) {
+            List<String> userList = roomUserList.get(room.getRoomId());
+            room.setUserCnt(userList == null ? 0 : userList.size());
+        }
         Collections.reverse(result);
 
         return result;
@@ -32,6 +38,9 @@ public class StompChatService {
 
     public void addUser(String roomId, String user) throws Exception {
         List<String> userList = roomUserList.get(roomId);
+        if(userList == null) {
+            userList = new ArrayList<>();
+        }
         userList.add(user);
         roomUserList.put(roomId, userList);
     }
@@ -44,12 +53,13 @@ public class StompChatService {
     public ChatRoom createChatRoom(String name){
         ChatRoom room = ChatRoom.create(name);
         chatRoom.put(room.getRoomId(), room);
-
         return room;
     }
 
     public Boolean isExistUser(String roomId, String user) throws Exception{
-        return getUserList(roomId).contains(user);
+        List<String> userList = getUserList(roomId);
+        boolean isExist = userList == null ? false : userList.contains(user);
+        return isExist;
     }
 
 }

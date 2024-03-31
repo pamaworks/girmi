@@ -4,6 +4,7 @@ import com.girmi.service.common.models.chat.stomp.Chat;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 public class StompChatController {
     private final SimpMessagingTemplate template;
 
+    @Autowired
     StompChatService stompChatService;
 
     @MessageMapping(value = "/chat/enter")
