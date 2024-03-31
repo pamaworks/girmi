@@ -1,12 +1,14 @@
-## 할꺼
+# Vuetify template가지고 뭔가 해보기
+
+## 해볼꺼
 
 ### 게시판
-
+- style 
 - 등록/수정 화면에 editor 넣기
 
 ### 채팅
-
-- 나가기 추가
+- style
+- 사용자 리스트 노출
 
 # Berry Free Vue Material UI Admin Template [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Get%20Berry%20React%20-%20The%20most%20beautiful%20Material%20designed%20Admin%20Dashboard%20Template%20&url=https://berrydashboard.io&via=codedthemes&hashtags=reactjs,webdev,developers,javascript)
 
