@@ -4,13 +4,14 @@ server:
     context-path: /service-common
 
 spring:
-  redis:
-    host: localhost
-      password: develop
-      port: 6379
   sse:
     thread:
       pool-size: 1000
+  data:
+    redis:
+      host: localhost
+      password: develop
+      port: 6379
 
 cors:
   allow:
