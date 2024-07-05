@@ -2,6 +2,12 @@
 
 ## 해볼꺼
 
+## 해야할것
+- vue2 -> vue3(composition api)로변경
+- ref 컨트롤
+- framework
+- 
+
 ### 게시판
 - style 
 - 등록/수정 화면에 editor 넣기
