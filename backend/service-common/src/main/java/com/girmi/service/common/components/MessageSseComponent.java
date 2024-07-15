@@ -79,8 +79,7 @@ public class MessageSseComponent {
   }
 
   public void unsubscribeAllChannel() {
-      subscriptions.values().forEach(Disposable::dispose);
-      subscriptions.clear();
+      
   }
 
 }
