@@ -17,31 +17,28 @@ import reactor.core.publisher.Mono;
 
 @Component
 @RequiredArgsConstructor
-public class SseManager {
+public class MessageSseComponent {
 
   private ScheduledExecutorService executorService = null;
-  private Map<String, Disposable> subscriptions = null;
 
   @Value("${spring.sse.thread.pool-size}")
   private int corePoolSize;
 
-  private String MSG_UNSUBSCRIVE = ":unsubscribe:";
-  private String MSG_UNSUBSCRIVE_ALL = ":unsubscribe:";
+  private String MSG_UNSUBSCRIVE = "unsubscribe";
+  private String MSG_UNSUBSCRIVE_ALL = "unsubscribe";
 
   @PostConstruct
   public void init() {
     executorService = Executors.newScheduledThreadPool(corePoolSize);
-    subscriptions = new ConcurrentHashMap<>();
   }
 
   private final ReactiveRedisTemplate<String, Object> redisTemplate;
 
   public void subscribe(String channel) throws Exception {
-    Disposable disposable = redisTemplate.listenTo(ChannelTopic.of(channel))
+    redisTemplate.listenTo(ChannelTopic.of(channel))
         .map(ReactiveSubscription.Message::getMessage).subscribe(
             message -> controlMessage(message, channel)
         );
-    subscriptions.put(channel, disposable);
   }
 
   public void controlMessage(Object message, String channel) {
@@ -70,7 +67,7 @@ public class SseManager {
         if (index[0] < words.length) {
           send(channel, words[index[0]++]); // 다음 단어 전송
         } else {
-          send(channel, ":end:");
+          send(channel, "end");
         }
       } catch (Exception e) {
 
@@ -79,11 +76,6 @@ public class SseManager {
   }
 
   public void unsubscribeFromChannel(String channelName) {
-    Disposable subscription = subscriptions.get(channelName);
-    if (subscription != null && !subscription.isDisposed()) {
-      subscription.dispose();
-      subscriptions.remove(channelName);
-    }
   }
 
   public void unsubscribeAllChannel() {
